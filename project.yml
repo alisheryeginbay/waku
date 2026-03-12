@@ -1,0 +1,86 @@
+name: Waku
+options:
+  bundleIdPrefix: com.alisher
+  deploymentTarget:
+    iOS: "26.0"
+  xcodeVersion: "16.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    DEVELOPMENT_TEAM: 84QSJK68P2
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  Waku:
+    type: application
+    platform: iOS
+    sources:
+      - path: Waku
+        excludes:
+          - "AppIcon.icon"
+      - path: Shared
+      - path: Waku/AppIcon.icon
+        type: folder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.alisher.waku
+        INFOPLIST_GENERATION_MODE: GeneratedFile
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: 1
+        GENERATE_INFOPLIST_FILE: true
+        CODE_SIGN_ENTITLEMENTS: SupportFiles/Waku.entitlements
+        SWIFT_STRICT_CONCURRENCY: complete
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_FILE: Waku/Info.plist
+    dependencies:
+      - target: WakuMonitor
+      - target: WakuShield
+      - target: WakuShieldAction
+
+  WakuMonitor:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: WakuMonitor
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.alisher.waku.monitor
+        INFOPLIST_FILE: WakuMonitor/Info.plist
+        GENERATE_INFOPLIST_FILE: false
+        CODE_SIGN_ENTITLEMENTS: SupportFiles/WakuMonitor.entitlements
+        SWIFT_STRICT_CONCURRENCY: complete
+
+  WakuShield:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: WakuShield
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.alisher.waku.shield
+        INFOPLIST_FILE: WakuShield/Info.plist
+        GENERATE_INFOPLIST_FILE: false
+        CODE_SIGN_ENTITLEMENTS: SupportFiles/WakuShield.entitlements
+        SWIFT_STRICT_CONCURRENCY: complete
+
+  WakuShieldAction:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: WakuShieldAction
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.alisher.waku.shieldaction
+        INFOPLIST_FILE: WakuShieldAction/Info.plist
+        GENERATE_INFOPLIST_FILE: false
+        CODE_SIGN_ENTITLEMENTS: SupportFiles/WakuShieldAction.entitlements
+        SWIFT_STRICT_CONCURRENCY: complete
