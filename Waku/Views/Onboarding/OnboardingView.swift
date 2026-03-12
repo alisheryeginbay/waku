@@ -32,12 +32,19 @@ struct OnboardingView: View {
                         await store.requestAuthorization()
                     }
                 } label: {
-                    Text("Enable Waku")
-                        .font(.system(size: 16, weight: .medium))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
+                    Group {
+                        if store.isRequestingAuthorization {
+                            ProgressView()
+                        } else {
+                            Text("Enable Waku")
+                        }
+                    }
+                    .font(.system(size: 16, weight: .medium))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
                 }
                 .buttonStyle(.glassProminent)
+                .disabled(store.isRequestingAuthorization)
                 .padding(.horizontal, 32)
 
                 Text("Waku uses Screen Time to block apps.\nYou can revoke access anytime in Settings.")

@@ -7,6 +7,7 @@ import Observation
 final class WakuStore {
     var activeSession: TimerSession?
     var isAuthorized: Bool
+    var isRequestingAuthorization: Bool = false
     var authorizationError: String?
 
     private let persistence = WakuPersistence.shared
@@ -49,6 +50,7 @@ final class WakuStore {
     // MARK: - Authorization
 
     func requestAuthorization() async {
+        isRequestingAuthorization = true
         do {
             try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
             isAuthorized = true
@@ -59,6 +61,7 @@ final class WakuStore {
             defaults.set(false, forKey: WakuConstants.authorizedKey)
             authorizationError = error.localizedDescription
         }
+        isRequestingAuthorization = false
     }
 
     // MARK: - Timer
