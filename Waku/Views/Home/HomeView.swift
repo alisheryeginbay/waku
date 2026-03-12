@@ -18,7 +18,7 @@ struct HomeView: View {
                     setupView
                 }
             }
-            .navigationTitle("waku")
+            .navigationTitle("Home")
             .familyActivityPicker(
                 isPresented: $showingActivityPicker,
                 selection: $activitySelection
