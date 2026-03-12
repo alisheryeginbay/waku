@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(WakuStore.self) private var store
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         Group {
@@ -22,5 +23,10 @@ struct ContentView: View {
             }
         }
         .animation(WakuTheme.calmAnimation, value: store.isAuthorized)
+        .onChange(of: scenePhase) {
+            if scenePhase == .active {
+                store.checkAuthorization()
+            }
+        }
     }
 }

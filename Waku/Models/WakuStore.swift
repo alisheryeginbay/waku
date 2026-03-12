@@ -6,12 +6,13 @@ import Observation
 @MainActor
 final class WakuStore {
     var activeSession: TimerSession?
-    var isAuthorized: Bool = false
+    var isAuthorized: Bool
     var authorizationError: String?
 
     private let persistence = WakuPersistence.shared
     private let blockingService = BlockingService()
     private let scheduleService = ScheduleService()
+    private let defaults = UserDefaults(suiteName: WakuConstants.appGroupID) ?? .standard
     private var timer: Timer?
 
     var isBlocking: Bool {
@@ -21,6 +22,13 @@ final class WakuStore {
     var remainingSeconds: TimeInterval = 0
 
     init() {
+        let cached = defaults.bool(forKey: WakuConstants.authorizedKey)
+        let current = AuthorizationCenter.shared.authorizationStatus == .approved
+        isAuthorized = cached || current
+        if current != cached {
+            defaults.set(current, forKey: WakuConstants.authorizedKey)
+        }
+
         if let session = persistence.loadSession() {
             if session.isExpired {
                 persistence.saveSession(nil)
@@ -32,15 +40,23 @@ final class WakuStore {
         }
     }
 
+    func checkAuthorization() {
+        let approved = AuthorizationCenter.shared.authorizationStatus == .approved
+        isAuthorized = approved
+        defaults.set(approved, forKey: WakuConstants.authorizedKey)
+    }
+
     // MARK: - Authorization
 
     func requestAuthorization() async {
         do {
             try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
             isAuthorized = true
+            defaults.set(true, forKey: WakuConstants.authorizedKey)
             authorizationError = nil
         } catch {
             isAuthorized = false
+            defaults.set(false, forKey: WakuConstants.authorizedKey)
             authorizationError = error.localizedDescription
         }
     }
