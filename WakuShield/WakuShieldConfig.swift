@@ -22,7 +22,7 @@ final class WakuShieldConfig: ShieldConfigurationDataSource {
     private func makeWakuShield() -> ShieldConfiguration {
         let backgroundColor = UIColor(red: 0.102, green: 0.102, blue: 0.102, alpha: 1.0)
         let foregroundColor = UIColor(red: 0.91, green: 0.894, blue: 0.875, alpha: 1.0)
-        let accentColor = UIColor(red: 0.545, green: 0.659, blue: 0.533, alpha: 1.0)
+        let accentColor = UIColor.tintColor
 
         return ShieldConfiguration(
             backgroundBlurStyle: .systemUltraThinMaterialDark,
